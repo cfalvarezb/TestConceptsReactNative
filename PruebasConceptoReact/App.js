@@ -14,6 +14,7 @@ import {
     View,
     Text,
     TextInput,
+    RefreshControl
 } from 'react-native';
 
 import {
@@ -31,11 +32,28 @@ import PizzaTraslator from './src/funcion_components/pizzatraslate.funcion.compo
 import Touchables from './src/class_components/touchables.component';
 import AppScrollView from './src/funcion_components/scrollview.funcion.component';
 import KeyboardAvoidingComponent from './src/funcion_components/keyboardavoidingview.funcion.component';
+import RefreshControlFunction from './src/funcion_components/refreshcontrol.function.component';
+import ModalFuncion from './src/funcion_components/modal.funcion.component';
+import FaltListFuncion from './src/funcion_components/flatlist.funcion.component';
 
 const App: () => React$Node = () => {
+    function wait(timeout) {
+        return new Promise(resolve => {
+          setTimeout(resolve, timeout);
+        });
+      }
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        console.log('Pasa por aca');
+        wait(2000).then(() => setRefreshing(false));
+      }, [refreshing]);
     return (
     <>
-    <ScrollView>
+    <ScrollView 
+    refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
         <Text > First Text </Text> 
         <View>
             <Text > More Text </Text>
@@ -61,6 +79,9 @@ const App: () => React$Node = () => {
         <Touchables/>
         <AppScrollView />
         <KeyboardAvoidingComponent />  
+        <RefreshControlFunction />
+        <ModalFuncion />
+        <FaltListFuncion />
     </ScrollView> 
       
     </>
